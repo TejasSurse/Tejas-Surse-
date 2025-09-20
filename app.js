@@ -17,8 +17,8 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 const axios = require('axios');
-
-
+const path = require('path');
+app.set('views', path.join(__dirname, 'views'));
 const multer = require('multer');
 const storage = multer.memoryStorage(); // store file in memory buffer
 const upload = multer({ storage: storage });
