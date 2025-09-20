@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Tejas Surse</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@400;500;600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .nav-item { transition: all 0.3s ease; }
+        .nav-item:hover { transform: translateX(5px); }
+        .nav-tooltip {
+            opacity: 0;
+            transform: translateX(10px);
+            transition: all 0.3s ease;
+        }
+        .nav-item:hover .nav-tooltip {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .content-card {
+            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
+            overflow: hidden;
+        }
+        #background-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        .timeline-item {
+            transition: all 0.3s ease;
+        }
+        .timeline-item:hover {
+            transform: translateY(-2px);
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -35px;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: #e5e7eb;
+            transition: background 0.3s ease;
+        }
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: -39px;
+            top: 0;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #1B1B3A;
+            transition: background 0.3s ease;
+        }
+        .toggle-button {
+            position: fixed;
+            top: 1rem;
+            z-index: 60;
+            display: none;
+            transition: all 0.3s ease;
+        }
+        .action-buttons a {
+            transition: all 0.3s ease;
+        }
+        .action-buttons a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .profile-photo {
+            transition: all 0.3s ease;
+        }
+        .profile-photo:hover {
+            transform: scale(1.05);
+        }
+        .filter-button {
+            transition: all 0.3s ease;
+        }
+        .filter-button:hover {
+            background-color: #1B1B3A;
+            color: #FFD700;
+        }
+        .filter-button.active {
+            background-color: #1B1B3A;
+            color: #FFD700;
+        }
+        .tech-item {
+            transition: all 0.3s ease;
+        }
+        .tech-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            background: #1B1B3A;
+            color: #FFD700;
+            transition: all 0.3s ease;
+        }
+        .social-icons a:hover {
+            background: #FFD700;
+            color: #1B1B3A;
+            transform: scale(1.1);
+        }
+        .social-icons i, .tech-item i {
+            font-size: 1.25rem;
+            transition: all 0.3s ease;
+        }
+        .tech-item i {
+            width: 2rem;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #1B1B3A;
+            color: #FFD700;
+        }
+        .tech-item:hover i {
+            background: #FFD700;
+            color: #1B1B3A;
+        }
+        @media (max-width: 768px) {
+            .nav-sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                left: 0;
+            }
+            .nav-sidebar.active {
+                transform: translateX(0);
+            }
+            .toggle-button {
+                display: block;
+                right: 1rem;
+                left: auto;
+            }
+            main {
+                margin-left: 0;
+                padding: 4rem 1rem;
+            }
+            .content-card {
+                padding: 1.5rem;
+            }
+            h1 {
+                font-size: 2.5rem;
+            }
+            h2 {
+                font-size: 1.75rem;
+            }
+            p {
+                font-size: 1rem;
+            }
+            .grid-cols-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .timeline-item::before,
+            .timeline-item::after {
+                left: -20px;
+            }
+            .timeline-item::after {
+                width: 8px;
+                height: 8px;
+            }
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            .action-buttons a {
+                width: 100%;
+                justify-content: center;
+                text-align: center;
+            }
+            .profile-photo {
+                width: 120px;
+                height: 120px;
+            }
+            .filter-buttons {
+                flex-wrap: wrap;
+            }
+            .filter-button {
+                flex: 1 1 auto;
+                min-width: 120px;
+            }
+            .social-icons a {
+                width: 2rem;
+                height: 2rem;
+            }
+            .social-icons i, .tech-item i {
+                font-size: 1rem;
+            }
+        }
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+            h2 {
+                font-size: 1.5rem;
+            }
+            p {
+                font-size: 0.875rem;
+            }
+            .content-card {
+                padding: 1rem;
+            }
+            .nav-sidebar {
+                width: 60%;
+            }
+            .nav-item div {
+                width: 2.5rem;
+                height: 2.5rem;
+            }
+            .nav-tooltip {
+                display: none;
+            }
+            .action-buttons a {
+                padding: 0.75rem;
+                font-size: 0.875rem;
+            }
+            .profile-photo {
+                width: 100px;
+                height: 100px;
+            }
+            .timeline-item::before,
+            .timeline-item::after {
+                left: -15px;
+            }
+            .timeline-item::after {
+                width: 6px;
+                height: 6px;
+            }
+            .timeline-item {
+                padding-left: 1rem;
+            }
+            .filter-button {
+                min-width: 100px;
+                font-size: 0.875rem;
+            }
+            .grid-cols-4 {
+                grid-template-columns: 1fr;
+            }
+            .social-icons a {
+                width: 1.75rem;
+                height: 1.75rem;
+            }
+            .social-icons i, .tech-item i {
+                font-size: 0.875rem;
+            }
+        }
+    </style>
+    <script>tailwind.config = { theme: { extend: { colors: { primary: '#1B1B3A', secondary: '#FFD700' }, borderRadius: { 'none': '0px', 'sm': '4px', DEFAULT: '8px', 'md': '12px', 'lg': '16px', 'xl': '20px', '2xl': '24px', '3xl': '32px', 'full': '9999px', 'button': '8px' } } } }</script>
+</head>
+<body class="bg-[#F8F8F8] min-h-screen">
+    
+    <!-- sidebar -->
+      <!-- sidebar -->
+    <button class="toggle-button text-primary p-2 rounded-xl bg-white/80" onclick="toggleSidebar()">
+        <i class="ri-menu-line text-2xl"></i>
+    </button>
+    <nav class="nav-sidebar fixed left-0 top-0 h-full w-20 bg-primary flex flex-col items-center py-8 z-50">
+        <div class="mb-12 text-white font-['Pacifico'] text-2xl">Tej@s</div>
+        <div class="flex flex-col gap-8">
+            <div class="nav-item relative group">
+                <a href="/" class="block">
+                    <div class="w-12 h-12 flex items-center justify-center text-white cursor-pointer ">
+                        <i class="ri-home-line text-xl"></i>
+                    </div>
+                    <div class="nav-tooltip absolute left-full ml-4 px-3 py-1 bg-white rounded shadow-lg whitespace-nowrap">
+                        Home
+                    </div>
+                </a>
+            </div>
+            <div class="nav-item relative group">
+                <a href="/about" class="block">
+                    <div class="w-12 h-12 flex items-center justify-center text-white cursor-pointer bg-white/20 rounded-xl">
+                        <i class="ri-user-line text-xl"></i>
+                    </div>
+                    <div class="nav-tooltip absolute left-full ml-4 px-3 py-1 bg-white rounded shadow-lg whitespace-nowrap">
+                        About
+                    </div>
+                </a>
+            </div>
+            <div class="nav-item relative group">
+                <a href="/projects" class="block">
+                    <div class="w-12 h-12 flex items-center justify-center text-white cursor-pointer">
+                        <i class="ri-folder-line text-xl"></i>
+                    </div>
+                    <div class="nav-tooltip absolute left-full ml-4 px-3 py-1 bg-white rounded shadow-lg whitespace-nowrap">
+                        Projects
+                    </div>
+                </a>
+            </div>
+            
+            <div class="nav-item relative group">
+                <a href="https://drive.google.com/file/d/1rz_sqZLUpESIrOKPP-BjUmXDoQb5MMCf/view?usp=sharing" class="block">
+                    <div class="w-12 h-12 flex items-center justify-center text-white cursor-pointer">
+                        <i class="ri-file-text-line text-xl"></i>
+                    </div>
+                    <div class="nav-tooltip absolute left-full ml-4 px-3 py-1 bg-white rounded shadow-lg whitespace-nowrap">
+                        Resume
+                    </div>
+                </a>
+            </div>
+            <div class="nav-item relative group">
+                <a href="/contact" class="block">
+                    <div class="w-12 h-12 flex items-center justify-center text-white cursor-pointer">
+                        <i class="ri-chat-1-line text-xl"></i>
+                    </div>
+                    <div class="nav-tooltip absolute left-full ml-4 px-3 py-1 bg-white rounded shadow-lg whitespace-nowrap">
+                        Contact
+                    </div>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+
+    <main class="min-h-screen p-4 sm:p-6 md:p-8 flex items-center justify-center md:ml-20">
+        <div class="content-card w-full max-w-5xl rounded-2xl p-6 sm:p-8 md:p-12">
+            
+            
+            <div class="mb-12">
+                <h2 class="font-['Poppins'] text-2xl sm:text-3xl font-semibold text-primary mb-6 sm:mb-8">Experience</h2>
+                <div class="relative pl-8 sm:pl-12 space-y-8">
+                    <div class="timeline-item relative pb-8">
+                        <h3 class="font-['Poppins'] font-medium text-base sm:text-lg mb-1">Full Stack Developer Intern</h3>
+                        <p class="text-primary mb-2 text-sm sm:text-base">Porfyro • 17 March 2025 - Present</p>
+                        <p class="text-gray-600 text-sm sm:text-base">During my internship, I honed my skills as a Full-Stack Developer, focusing on building scalable and responsive web applications using a robust tech stack that included PHP, Node.js, Express.js, HTML, CSS, JavaScript, and Bootstrap. I played a key role in developing and optimizing multiple platforms, such as TiXup, a real-time ticket reselling system that streamlined user transactions, Cravify, a comprehensive restaurant management system designed to enhance operational efficiency, and BoozExpress, a beverage e-commerce platform tailored for seamless user experiences. Additionally, I created a Customer Support Chat Agent leveraging AI and automation tools to provide real-time client assistance, significantly improving user engagement. My contributions extended to implementing secure authentication systems, developing REST APIs, and crafting responsive user interfaces, ensuring both functionality and an exceptional user experience across diverse projects.</p>
+                    </div>
+                   
+                    <div class="timeline-item relative">
+                        <h3 class="font-['Poppins'] font-medium text-base sm:text-lg mb-1">Full Stack Freelancer</h3>
+                        <p class="text-primary mb-2 text-sm sm:text-base">August 2024 - Present</p>
+                        <p class="text-gray-600 text-sm sm:text-base">As a freelance Full-Stack Developer, I built responsive web applications with modern UI/UX practices, collaborating with designers to enhance user experiences. I designed and deployed websites across industries like construction, finance, education, and design. Key projects include the Bonafide Generation & Management Platform, a Construction Website, MoneyPro Advisors Platform, Shubamrut Designing Studio Website, and a dynamic Interior Designing Studio Website with an admin panel, all focused on scalability and user-centric design.</p>
+                    </div>
+                </div>
+            </div>
+           <div>
+    <h2 class="font-['Poppins'] text-2xl sm:text-3xl font-semibold text-primary mb-6 sm:mb-8">Education</h2>
+    <div class="relative pl-8 sm:pl-12 space-y-8">
+        <div class="timeline-item relative pb-8">
+            <h3 class="font-['Poppins'] font-medium text-base sm:text-lg mb-1">B.Tech in Computer Science and Engineering</h3>
+            <p class="text-primary mb-2 text-sm sm:text-base">CSMSS Chhatrapati Shahu College of Engineering, Chh. Sambhajinagar • 2022 – 2026</p>
+            <p class="text-gray-600 text-sm sm:text-base">GPA: 7.51</p>
+        </div>
+        <div class="timeline-item relative pb-8">
+            <h3 class="font-['Poppins'] font-medium text-base sm:text-lg mb-1">Higher Secondary Certificate (HSC)</h3>
+            <p class="text-primary mb-2 text-sm sm:text-base">Deogiri College, Chh. Sambhajinagar • 2022</p>
+            <p class="text-gray-600 text-sm sm:text-base">Percentage: 79.17%</p>
+        </div>
+        <div class="timeline-item relative">
+            <h3 class="font-['Poppins'] font-medium text-base sm:text-lg mb-1">Secondary School Certificate (SSC)</h3>
+            <p class="text-primary mb-2 text-sm sm:text-base">Moral Kids High School • 2020</p>
+            <p class="text-gray-600 text-sm sm:text-base">Percentage: 86.80%</p>
+        </div>
+    </div>
+</div>
+
+
+<div>
+    <h2 class="font-['Poppins'] text-2xl sm:text-3xl font-semibold text-primary mb-6 sm:mb-8 mt-4">Certifications</h2>
+    <div class="relative pl-8 sm:pl-12 space-y-8">
+        <div class="timeline-item relative pb-8">
+            <h3 class="font-['Poppins'] font-medium text-base sm:text-lg mb-1">Backend Development and APIs</h3>
+            <p class="text-primary mb-2 text-sm sm:text-base">FreeCodeCamp • 2023</p>
+            <p class="text-gray-600 text-sm sm:text-base">Mastered building scalable backend systems and RESTful APIs.</p>
+        </div>
+        <div class="timeline-item relative pb-8">
+            <h3 class="font-['Poppins'] font-medium text-base sm:text-lg mb-1">Full Stack Web Development (MERN)</h3>
+            <p class="text-primary mb-2 text-sm sm:text-base">Apna College • 2023</p>
+            <p class="text-gray-600 text-sm sm:text-base">Developed expertise in MERN stack for end-to-end web development.</p>
+        </div>
+        <div class="timeline-item relative pb-8">
+            <h3 class="font-['Poppins'] font-medium text-base sm:text-lg mb-1">Programming in Java</h3>
+            <p class="text-primary mb-2 text-sm sm:text-base">NPTEL • 2023</p>
+            <p class="text-gray-600 text-sm sm:text-base">Gained proficiency in Java programming and object-oriented concepts.</p>
+        </div>
+        <div class="timeline-item relative">
+            <h3 class="font-['Poppins'] font-medium text-base sm:text-lg mb-1">Problem Solving Through C</h3>
+            <p class="text-primary mb-2 text-sm sm:text-base">NPTEL • 2022</p>
+            <p class="text-gray-600 text-sm sm:text-base">Enhanced problem-solving skills using C programming.</p>
+        </div>
+    </div>
+</div>  
+
+
+        </div>
+    </main>
+    <canvas id="background-canvas"></canvas>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Three.js Background
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({
+                canvas: document.getElementById('background-canvas'),
+                alpha: true
+            });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            camera.position.z = 5;
+            const particles = [];
+            const particleCount = window.innerWidth < 768 ? 50 : 100;
+            for (let i = 0; i < particleCount; i++) {
+                const geometry = new THREE.SphereGeometry(0.05, 16, 16);
+                const material = new THREE.MeshBasicMaterial({ color: 0xE6E6FA, transparent: true, opacity: 0.5 });
+                const particle = new THREE.Mesh(geometry, material);
+                particle.position.x = Math.random() * 10 - 5;
+                particle.position.y = Math.random() * 10 - 5;
+                particle.position.z = Math.random() * 10 - 5;
+                particles.push({
+                    mesh: particle,
+                    speed: Math.random() * 0.02
+                });
+                scene.add(particle);
+            }
+            function animate() {
+                requestAnimationFrame(animate);
+                particles.forEach(particle => {
+                    particle.mesh.position.y += particle.speed;
+                    if (particle.mesh.position.y > 5) {
+                        particle.mesh.position.y = -5;
+                    }
+                });
+                renderer.render(scene, camera);
+            }
+            animate();
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+
+            // Sidebar Toggle
+            window.toggleSidebar = function() {
+                const sidebar = document.querySelector('.nav-sidebar');
+                sidebar.classList.toggle('active');
+                const toggleButton = document.querySelector('.toggle-button i');
+                toggleButton.classList.toggle('ri-menu-line');
+                toggleButton.classList.toggle('ri-close-line');
+            };
+
+            // Technology Filter
+            const filterButtons = document.querySelectorAll('.filter-button');
+            const techItems = document.querySelectorAll('.tech-item');
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const filter = button.getAttribute('data-filter');
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    techItems.forEach(item => {
+                        const category = item.getAttribute('data-category');
+                        if (filter === 'all' || filter === category) {
+                            item.style.display = 'flex';
+                            item.style.opacity = '1';
+                        } else {
+                            item.style.opacity = '0';
+                            setTimeout(() => { item.style.display = 'none'; }, 300);
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

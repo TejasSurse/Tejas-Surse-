@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects - Tejas Surse</title>
+
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@400;500;600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .nav-item { transition: all 0.3s ease; }
+    .nav-item:hover { transform: translateX(5px); }
+    .nav-tooltip {
+      opacity: 0;
+      transform: translateX(10px);
+      transition: all 0.3s ease;
+    }
+    .nav-item:hover .nav-tooltip {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .project-card {
+      transition: all 0.3s ease;
+      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.8);
+    }
+    .project-card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+    #background-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+    .tech-tag { transition: all 0.2s ease; }
+    .tech-tag:hover { background-color: #1B1B3A; color: white; }
+
+    .toggle-button {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 60;
+      display: none;
+      transition: all 0.3s ease;
+    }
+
+    @media (max-width: 768px) {
+      .nav-sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        left: 0;
+      }
+      .nav-sidebar.active { transform: translateX(0); }
+      .toggle-button { display: block; }
+      main { 
+        margin-left: 0; 
+        padding: 4rem 1rem; 
+        display: flex; 
+        justify-content: center; 
+      }
+      .max-w-7xl { 
+        width: 100%; 
+      }
+    }
+  </style>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { primary: '#1B1B3A', secondary: '#FFD700' },
+          borderRadius: { 'button': '8px' }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-[#F8F8F8] min-h-screen">
+
+  <!-- Toggle -->
+  <button class="toggle-button text-primary p-2 rounded-xl bg-white/80" onclick="toggleSidebar()">
+    <i class="ri-menu-line text-2xl"></i>
+  </button>
+
+  <!-- Sidebar -->
+  <nav class="nav-sidebar fixed left-0 top-0 h-full w-20 bg-primary flex flex-col items-center py-8 z-50">
+    <div class="mb-12 text-white font-['Pacifico'] text-2xl">Tej@s</div>
+    <div class="flex flex-col gap-8">
+      <div class="nav-item relative group">
+        <a href="/" class="block">
+          <div class="w-12 h-12 flex items-center justify-center text-white cursor-pointer">
+            <i class="ri-home-line text-xl"></i>
+          </div>
+          <div class="nav-tooltip absolute left-full ml-4 px-3 py-1 bg-white rounded shadow-lg whitespace-nowrap">Home</div>
+        </a>
+      </div>
+      <div class="nav-item relative group">
+        <a href="/about" class="block">
+          <div class="w-12 h-12 flex items-center justify-center text-white cursor-pointer">
+            <i class="ri-user-line text-xl"></i>
+          </div>
+          <div class="nav-tooltip absolute left-full ml-4 px-3 py-1 bg-white rounded shadow-lg whitespace-nowrap">About</div>
+        </a>
+      </div>
+      <div class="nav-item relative group">
+        <a href="/projects" class="block">
+          <div class="w-12 h-12 flex items-center justify-center text-white cursor-pointer bg-white/20 rounded-xl">
+            <i class="ri-folder-line text-xl"></i>
+          </div>
+          <div class="nav-tooltip absolute left-full ml-4 px-3 py-1 bg-white rounded shadow-lg whitespace-nowrap">Projects</div>
+        </a>
+      </div>
+      <div class="nav-item relative group">
+        <a href="https://drive.google.com/file/d/1rz_sqZLUpESIrOKPP-BjUmXDoQb5MMCf/view?usp=sharing" class="block">
+          <div class="w-12 h-12 flex items-center justify-center text-white cursor-pointer">
+            <i class="ri-file-text-line text-xl"></i>
+          </div>
+          <div class="nav-tooltip absolute left-full ml-4 px-3 py-1 bg-white rounded shadow-lg whitespace-nowrap">Resume</div>
+        </a>
+      </div>
+      <div class="nav-item relative group">
+        <a href="/contact" class="block">
+          <div class="w-12 h-12 flex items-center justify-center text-white cursor-pointer">
+            <i class="ri-chat-1-line text-xl"></i>
+          </div>
+          <div class="nav-tooltip absolute left-full ml-4 px-3 py-1 bg-white rounded shadow-lg whitespace-nowrap">Contact</div>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <main class="min-h-screen p-8">
+    <div class="max-w-7xl mx-auto">
+      <div class="mb-12">
+        <h1 class="font-['Poppins'] text-4xl font-semibold text-primary mb-4">My Projects</h1>
+        <p class="text-gray-600 max-w-3xl">
+          I approach each project with a focus on scalability, performance, and user experience. Here's a selection of my recent work showcasing various technologies and solutions.
+        </p>
+      </div>
+
+      <!-- Search -->
+      <div class="relative mb-8">
+        <input id="searchInput" type="text" placeholder="Search projects..."
+               class="w-full max-w-md pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:border-primary outline-none text-sm">
+        <i class="ri-search-line absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+      </div>
+
+      <!-- Projects Grid -->
+      <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <% projects.forEach(project => { %>
+          <div class="project-card rounded-2xl overflow-hidden shadow-lg">
+            <div class="aspect-video relative">
+              <img src="<%= project.banner %>" alt="<%= project.name %>" class="w-full h-full object-cover">
+            </div>
+            <div class="p-6">
+              <h3 class="project-title font-['Poppins'] text-xl font-medium mb-2"><%= project.name %></h3>
+              <p class="text-gray-600 text-sm mb-4"><%= project.description %></p>
+
+              <div class="flex flex-wrap gap-2 mb-6">
+                <% project.technologies.forEach(tech => { %>
+                  <span class="tech-tag px-3 py-1 rounded-full bg-gray-100 text-xs"><%= tech %></span>
+                <% }) %>
+              </div>
+
+              <div class="flex gap-3">
+                <% if (project.liveLink && project.liveLink.trim() !== '') { %>
+                  <a href="<%= project.liveLink %>" target="_blank"
+                     class="!rounded-button bg-primary text-white px-4 py-2 text-sm flex-1 text-center">
+                    Live Link
+                  </a>
+                <% } %>
+
+                <a href="<%= project.githubLink %>" target="_blank"
+                   class="!rounded-button bg-gray-800 text-white px-4 py-2 text-sm flex-1 text-center">
+                  GitHub
+                </a>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  </main>
+
+  <canvas id="background-canvas"></canvas>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // --- Three.js background
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      const renderer = new THREE.WebGLRenderer({
+        canvas: document.getElementById('background-canvas'),
+        alpha: true
+      });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      camera.position.z = 5;
+
+      const particles = [];
+      const particleCount = window.innerWidth < 768 ? 50 : 100;
+      for (let i = 0; i < particleCount; i++) {
+        const geometry = new THREE.SphereGeometry(0.05, 16, 16);
+        const material = new THREE.MeshBasicMaterial({ color: 0xE6E6FA, transparent: true, opacity: 0.5 });
+        const particle = new THREE.Mesh(geometry, material);
+        particle.position.x = Math.random() * 10 - 5;
+        particle.position.y = Math.random() * 10 - 5;
+        particle.position.z = Math.random() * 10 - 5;
+        particles.push({ mesh: particle, speed: Math.random() * 0.02 });
+        scene.add(particle);
+      }
+
+      function animate() {
+        requestAnimationFrame(animate);
+        particles.forEach(p => {
+          p.mesh.position.y += p.speed;
+          if (p.mesh.position.y > 5) p.mesh.position.y = -5;
+        });
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      // --- Sidebar Toggle
+      window.toggleSidebar = function () {
+        const sidebar = document.querySelector('.nav-sidebar');
+        sidebar.classList.toggle('active');
+        const icon = document.querySelector('.toggle-button i');
+        icon.classList.toggle('ri-menu-line');
+        icon.classList.toggle('ri-close-line');
+      };
+
+      // --- Search filter
+      const searchInput = document.getElementById('searchInput');
+      const cards = document.querySelectorAll('.project-card');
+
+      searchInput.addEventListener('input', function () {
+        const query = this.value.toLowerCase();
+        cards.forEach(card => {
+          const title = card.querySelector('.project-title').textContent.toLowerCase();
+          const tags = Array.from(card.querySelectorAll('.tech-tag')).map(tag => tag.textContent.toLowerCase());
+          const match = title.includes(query) || tags.some(tag => tag.includes(query));
+          card.style.display = match ? 'block' : 'none';
+        });
+      });
+    });
+  </script>
+</body>
+</html>

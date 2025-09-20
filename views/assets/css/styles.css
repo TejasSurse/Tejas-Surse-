@@ -1,0 +1,14 @@
+/* Custom styles */
+.glassmorphism {
+    background: rgba(31, 41, 55, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.sidebar-collapsed {
+    transform: translateX(-100%);
+}
+
+.main-expanded {
+    margin-left: 0;
+}
